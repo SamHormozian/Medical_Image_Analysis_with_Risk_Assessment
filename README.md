@@ -9,12 +9,24 @@
 ## **Steps:**
 
 **1: Gather and Understand Data**
+- find datasets
+- Understand data characteristics
 
 **2: Setup Environment**
+- optional
 
 **3. Build prototype in python**
+- data preprocessing
+- Model development
+- integrate tensorflow(possibly)
+- training and testing
+- Export Model
 
 **4. Prepare C++ deployment**
+- setup tensorflow or ONNX runtime
+- Load and Infer Model
+- Preprocess images in c++
+- Run inference
 
 **5. Visualize Results**
 
