@@ -12,7 +12,7 @@
 - find datasets
 - Understand data characteristics
 
-**2: Setup Environment**
+**2: Setup Virtual Environment**
 - optional
 
 **3. Build prototype in python**
