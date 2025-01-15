@@ -1,7 +1,7 @@
 # Medical_Image_Analysis_with_Risk_Assessment
 
 ## **Goal:**
-- Make a system that detects medical anomalies such as tumors, cancer, etc.. and provide uncertainty estimates for predictions
+- Make a system that detects tumors and cancer, and provide uncertainty estimates for predictions
 - Trained bayesian neural network
 - C++ applicaiton for real time inference with uncertainty visualizations
 - Can be used in Medical Industry
