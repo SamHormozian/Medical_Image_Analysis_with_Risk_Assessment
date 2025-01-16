@@ -12,8 +12,8 @@
 
 **1: Gather and Understand Data**
 - Using the [**ISIC dataset**](https://api.isic-archive.com/collections/249/)
-  - BCN200 Dataset consists of dermoscopic images of skin lesions between 2010 - 2016 at Hospital Clinic in Barcelona.
-- Understand data characteristics
+  - BCN200 Dataset consists of dermoscopic images of skin lesions between 2010 - 2016 at Hospital Clinic in Barcelona. As well as the metadata associated with each image
+- Understand data characteristics:
 
 **2: Setup Virtual Environment**
 - optional
@@ -37,9 +37,11 @@
 ## Challenges
 - issues with pushing to repo due to size of data
 - Solutions:
-  - Lower image resolution (no smaller than 128 by 128)
-  - Compress metadat
-  - use Git LFS
+  - **Lower image resolution (no smaller than 128 by 128)**
+  - **Compress metadata**
+
+ # USE ``` gunzip metadata.csv.gz ``` to uncompress metadata and ``` gzip metadata.csv ``` to compress
+
 
 
 
