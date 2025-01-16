@@ -1,15 +1,18 @@
 # Medical_Image_Analysis_with_Risk_Assessment
 
-## **Goal:**
-- Make a system that detects tumors and cancer, and provide uncertainty estimates for predictions
+## About + Thought process
+
+### **Goal:**
+- Make a system that detects skin cancer in patients(detects melanoma vs benign lesions, classify between multiple legions such as melanoma, nevus, keratosi, etc.), and provide uncertainty estimates for predictions
 - Trained bayesian neural network
 - C++ applicaiton for real time inference with uncertainty visualizations
 - Can be used in Medical Industry
 
-## **Steps:**
+### **Steps:**
 
 **1: Gather and Understand Data**
-- find datasets
+- Using the [**ISIC dataset**](https://api.isic-archive.com/collections/249/)
+  - BCN200 Dataset consists of dermoscopic images of skin lesions between 2010 - 2016 at Hospital Clinic in Barcelona.
 - Understand data characteristics
 
 **2: Setup Virtual Environment**
