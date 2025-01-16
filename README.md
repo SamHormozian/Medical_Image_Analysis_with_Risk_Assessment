@@ -5,7 +5,7 @@
 ### **Goal:**
 - Make a system that detects skin cancer in patients(detects melanoma vs benign lesions, classify between multiple legions such as melanoma, nevus, keratosi, etc.), and provide uncertainty estimates for predictions
 - Trained bayesian neural network
-- C++ applicaiton for real time inference with uncertainty visualizations
+- C++ applicaton for real time inference with uncertainty visualizations
 - Can be used in Medical Industry
 
 ### **Steps:**
@@ -32,6 +32,14 @@
 - Run inference
 
 **5. Visualize Results**
+
+
+## Challenges
+- issues with pushing to repo due to size of data
+- Solutions:
+  - Lower image resolution (no smaller than 128 by 128)
+  - Compress metadat
+  - use Git LFS
 
 
 
