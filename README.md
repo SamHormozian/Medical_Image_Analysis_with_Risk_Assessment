@@ -2,6 +2,18 @@
 
 ## About + Thought process
 
+
+
+
+## How to Run:
+
+1. Decompress all csv files using ```compress-decompress.py ```
+
+
+
+
+
+
 ### **Goal:**
 - Make a system that detects skin cancer in patients(detects melanoma vs benign lesions, classify between multiple legions such as melanoma, nevus, keratosi, etc.), and provide uncertainty estimates for predictions
 - Trained bayesian neural network
@@ -40,9 +52,4 @@
   - **Lower image resolution (no smaller than 128 by 128)**
   - **Compress metadata**
 
- # USE ``` gunzip metadata.csv.gz ``` to uncompress metadata and ``` gzip metadata.csv ``` to compress
-
-
-
-
-
+ # USE
