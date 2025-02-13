@@ -1,55 +1,22 @@
-# Medical_Image_Analysis_with_Risk_Assessment
+# Data Exploration and Preprocessing
+## Data Pre Cleaning:
+- Contains 18946 observations
+- ![Data Columns](image.png)
 
-## About + Thought process
+- ![Missing vals](image-1.png)
+- ![Stats](image-2.png)
 
+## Cleaned Data
 
-
-
-## How to Run:
-
-1. Decompress all csv files using ```compress-decompress.py ```
-
-
-
-
-
-
-### **Goal:**
-- Make a system that detects skin cancer in patients(detects melanoma vs benign lesions, classify between multiple legions such as melanoma, nevus, keratosi, etc.), and provide uncertainty estimates for predictions
-- Trained bayesian neural network
-- C++ applicaton for real time inference with uncertainty visualizations
-- Can be used in Medical Industry
-
-### **Steps:**
-
-**1: Gather and Understand Data**
-- Using the [**ISIC dataset**](https://api.isic-archive.com/collections/249/)
-  - BCN200 Dataset consists of dermoscopic images of skin lesions between 2010 - 2016 at Hospital Clinic in Barcelona. As well as the metadata associated with each image
-- Understand data characteristics:
-
-**2: Setup Virtual Environment**
-- optional
-
-**3. Build prototype in python**
-- data preprocessing
-- Model development
-- integrate tensorflow(possibly)
-- training and testing
-- Export Model
-
-**4. Prepare C++ deployment**
-- setup tensorflow or ONNX runtime
-- Load and Infer Model
-- Preprocess images in c++
-- Run inference
-
-**5. Visualize Results**
-
-
-## Challenges
-- issues with pushing to repo due to size of data
-- Solutions:
-  - **Lower image resolution (no smaller than 128 by 128)**
-  - **Compress metadata**
-
- # USE
+- Dropped 'isic_id','lesion_id','attribution','copyright_license','image_type'
+  - These columns contain identification for specific images associated with the data, as well as irrelavant data that in no way helps in training our bayesian model.
+- Processed the 'age' column into specific age ranges
+- Converted boolean columns into boolean types(True/False)
+- Encoded 'anatom_site_general', 'benign_malignant','diagnosis',
+'diagnosis_1', 'diagnosis_2', 'diagnosis_3',
+'diagnosis_confirm_type', 'sex', 'age_group'
+  - mapped non-integer values to integers to be able to calculate probablities.
+- Enoded missing values as 'Unknown'
+- ![Cleaned Columns](image-3.png)
+- ![Missing vals](image-4.png)
+- ![Stats](image-5.png)
