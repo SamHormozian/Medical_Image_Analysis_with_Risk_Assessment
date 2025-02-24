@@ -86,6 +86,10 @@ This is a **goal-based probabilistic agent**. It is designed to achieve the goal
 - Encoded 'anatom_site_general', 'benign_malignant','diagnosis',
 'diagnosis_1', 'diagnosis_2', 'diagnosis_3',
 'diagnosis_confirm_type', 'sex', 'age_group'
+  - 'diagnosis_1', 'diagnosis_2', 'diagnosis_3' represent 3 possible diagnosis for a skin lesion, need to be converted to integer values to calculate probabilities
+  - 'diagnosis_confirm_type' is the most certain diagnosis, higher prob mapping
+  - 'sex' male(1) and female(0)
+  - 'age_group' enocoded as integers 1-4 to ensure smooth probability calulations
   - mapped non-integer values to integers to be able to calculate probablities.
 - Enoded missing values as 'Unknown'
 - ![Cleaned Columns](image-3.png)
