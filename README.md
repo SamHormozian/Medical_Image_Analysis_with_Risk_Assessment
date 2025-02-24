@@ -1,5 +1,25 @@
 # Medical Image Analysis
 ## UPDATED SECTION
+
+### Cleaned Data
+
+- Dropped 'isic_id','lesion_id','attribution','copyright_license','image_type'
+  - These columns contain identification for specific images associated with the data, as well as irrelavant data that in no way helps in training our bayesian model.
+- Processed the 'age' column into specific age ranges
+- Converted boolean columns into boolean types(True/False)
+- Encoded 'anatom_site_general', 'benign_malignant','diagnosis',
+'diagnosis_1', 'diagnosis_2', 'diagnosis_3',
+'diagnosis_confirm_type', 'sex', 'age_group'
+  - 'diagnosis_1', 'diagnosis_2', 'diagnosis_3' represent 3 possible diagnosis for a skin lesion, need to be converted to integer values to calculate probabilities
+  - 'diagnosis_confirm_type' is the most certain diagnosis, higher prob mapping
+  - 'sex' male(1) and female(0)
+  - 'age_group' enocoded as integers 1-4 to ensure smooth probability calulations
+  - mapped non-integer values to integers to be able to calculate probablities.
+- Enoded missing values as 'Unknown'
+- ![Cleaned Columns](image-3.png)
+- ![Missing vals](image-4.png)
+- ![Stats](image-5.png)
+- 
 ### Agent Setup Visualization
 
 The Bayesian agent's inference result is visualized below. This plot shows the probability distribution for the target variable `benign_malignant` based on the provided evidence. The agent updates its beliefs according to the evidence, and the resulting probability distribution is displayed for clarity.
@@ -77,24 +97,7 @@ This is a **goal-based probabilistic agent**. It is designed to achieve the goal
 - ![Missing vals](image-1.png)
 - ![Stats](image-2.png)
 
-### Cleaned Data
 
-- Dropped 'isic_id','lesion_id','attribution','copyright_license','image_type'
-  - These columns contain identification for specific images associated with the data, as well as irrelavant data that in no way helps in training our bayesian model.
-- Processed the 'age' column into specific age ranges
-- Converted boolean columns into boolean types(True/False)
-- Encoded 'anatom_site_general', 'benign_malignant','diagnosis',
-'diagnosis_1', 'diagnosis_2', 'diagnosis_3',
-'diagnosis_confirm_type', 'sex', 'age_group'
-  - 'diagnosis_1', 'diagnosis_2', 'diagnosis_3' represent 3 possible diagnosis for a skin lesion, need to be converted to integer values to calculate probabilities
-  - 'diagnosis_confirm_type' is the most certain diagnosis, higher prob mapping
-  - 'sex' male(1) and female(0)
-  - 'age_group' enocoded as integers 1-4 to ensure smooth probability calulations
-  - mapped non-integer values to integers to be able to calculate probablities.
-- Enoded missing values as 'Unknown'
-- ![Cleaned Columns](image-3.png)
-- ![Missing vals](image-4.png)
-- ![Stats](image-5.png)
 
 ### Model Training
 
