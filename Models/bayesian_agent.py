@@ -2,6 +2,9 @@ import pandas as pd
 from pgmpy.models import BayesianNetwork
 from pgmpy.estimators import BayesianEstimator
 from pgmpy.inference import VariableElimination
+import matplotlib.pyplot as plt
+import sys
+
 
 def load_data():
     """
@@ -49,6 +52,63 @@ def perform_inference(model, evidence):
     query_result = infer.query(variables=["benign_malignant"], evidence=evidence)
     return query_result
 
+def get_evidence_from_input():
+    """
+    Retrieve evidence from command-line arguments.
+    If no valid arguments are provided, default evidence is used.
+    
+    Expected command-line arguments (in order):
+    1. sex (int)
+    2. anatom_site_general (int)
+    3. age_group (int)
+    """
+    default_evidence = {"sex": 1, "anatom_site_general": 2, "age_group": 3}
+    
+    if len(sys.argv) == 4:
+        try:
+            evidence = {
+                "sex": int(sys.argv[1]),
+                "anatom_site_general": int(sys.argv[2]),
+                "age_group": int(sys.argv[3])
+            }
+            print("Using evidence from command-line arguments.")
+            return evidence
+        except ValueError:
+            print("Invalid command-line input. Falling back to default evidence.")
+    else:
+        print("No command-line evidence provided. Using default evidence.")
+    
+    return default_evidence
+
+def plot_inference_result(result, filename='inference_result.png'):
+    """
+    Plot the probability distribution for 'benign_malignant' obtained from inference.
+    
+    Parameters:
+    - result: The inference result (e.g., a CPD from pgmpy) with a 'values' attribute.
+    - filename: The name of the file where the plot will be saved.
+    """
+    # Extract probability values from the result.
+    # The result is typically a DiscreteFactor object from pgmpy.
+    probabilities = result.values
+    # Create state labels based on the number of states.
+    states = [f'benign_malignant({i})' for i in range(len(probabilities))]
+    
+    # Create the bar chart.
+    plt.figure(figsize=(8, 6))
+    plt.bar(states, probabilities, color='skyblue')
+    plt.xlabel('benign_malignant States')
+    plt.ylabel('Probability')
+    plt.title('Inference Result: Probability Distribution for benign_malignant')
+    plt.ylim(0, 1)  # Since these are probabilities
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    
+    # Save the plot to a file.
+    plt.savefig(filename)
+    plt.close()
+    print(f"Inference result plot saved as '{filename}'")
+
+
 def main():
     # Step 1: Load the cleaned data
     df = load_data()
@@ -60,11 +120,8 @@ def main():
     # Note: Because you used LabelEncoder, the evidence values need to be encoded.
     # For instance, if LabelEncoder encoded 'sex' as {0: "female", 1: "male"}, choose accordingly.
     # Adjust these values based on your encoding.
-    evidence = {
-        "sex": 1,                   # example: 1 might correspond to 'male'
-        "anatom_site_general": 2,   # example encoded value (check your data mapping)
-        "age_group": 3              # example: if your bins were encoded as 0: '0-20', 1: '21-40', etc.
-    }
+    evidence = evidence = get_evidence_from_input()
+
     
     # Step 4: Perform inference using the evidence
     result = perform_inference(model, evidence)
@@ -72,6 +129,8 @@ def main():
     print(evidence)
     print("\nProbability Distribution for 'benign_malignant':")
     print(result)
+
+    plot_inference_result(result, filename='inference_result.png')
 
 if __name__ == "__main__":
     main()

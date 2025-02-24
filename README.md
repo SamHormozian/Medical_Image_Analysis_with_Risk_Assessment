@@ -1,4 +1,51 @@
 # Medical Image Analysis
+## UPDATED SECTION
+### Agent Setup Visualization
+
+The Bayesian agent's inference result is visualized below. This plot shows the probability distribution for the target variable `benign_malignant` based on the provided evidence. The agent updates its beliefs according to the evidence, and the resulting probability distribution is displayed for clarity.
+
+![Inference Result](inference_result.png)
+
+*Note: The plot is generated automatically when running `python3 Models/bayesian_agent.py` with default or supplied command-line evidence.*
+
+### Model Evaluation
+
+Our first model was evaluated using the Bayesian network trained on 18,946 observations. Inference was performed using either the default evidence or command-line provided evidence. For example, using the default evidence:
+- **sex:** 1  
+- **anatom_site_general:** 2  
+- **age_group:** 3  
+
+The model produced the following probability distribution:
+- `benign_malignant(0)`: ~9.14%
+- `benign_malignant(1)`: ~13.39%
+- `benign_malignant(2)`: ~77.47%
+
+This evaluation demonstrates that the model successfully updates its beliefs based on the provided evidence. Future evaluations will include testing on a hold-out dataset and using metrics such as accuracy, ROC-AUC, precision, recall, F1-score, and calibration curves.
+
+### Evidence Handling
+The Bayesian agent now supports dynamic evidence input via command-line arguments. If no evidence is provided, the agent falls back to default values. The default sets the evidence to:
+- **sex = 1**
+- **anatom_site_general = 2**
+- **age_group = 3**
+
+## Conclusion and Future Work
+### Conclusion
+The initial model demonstrates the viability of using Bayesian networks for probabilistic skin lesion diagnosis. It successfully learns Conditional Probability Distributions (CPDs) from clinical metadata and performs inference to yield interpretable probability estimates for benign_malignant based on patient features. The current output (e.g., 9.14%, 13.39%, and 77.47%) provides a preliminary indication of the model’s belief distribution, though further evaluation with rigorous metrics is needed to fully assess its clinical utility.
+
+### Future Improvements
+- **Enhanced Network Structure:**  
+  Incorporate additional features (e.g., imaging-derived features, biopsy details) to improve predictive performance.
+- **Dynamic Evidence Integration:**  
+  Replace hard-coded evidence with real-time data inputs from clinical systems or user interfaces.
+- **Advanced Evaluation:**  
+  -***Split data into training and testing subsets.***
+  - ***Apply cross-validation.***
+  - ***Compute metrics like ROC-AUC, precision, recall, and calibration curves.***
+  - ***Use these metrics to refine and calibrate the model.***
+- **Uncertainty Visualization:**  
+  Develop intuitive visualization methods for uncertainty estimates to support clinical decision-making.
+
+## END OF UPDATED SECTION
 
 ## Overview
 
