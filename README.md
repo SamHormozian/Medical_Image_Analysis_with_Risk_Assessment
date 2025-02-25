@@ -19,7 +19,8 @@
 - ![Cleaned Columns](image-3.png)
 - ![Missing vals](image-4.png)
 - ![Stats](image-5.png)
-- 
+
+
 ### Agent Setup Visualization
 
 The Bayesian agent's inference result is visualized below. This plot shows the probability distribution for the target variable `benign_malignant` based on the provided evidence. The agent updates its beliefs according to the evidence, and the resulting probability distribution is displayed for clarity.
@@ -27,6 +28,67 @@ The Bayesian agent's inference result is visualized below. This plot shows the p
 ![Inference Result](inference_result.png)
 
 *Note: The plot is generated automatically when running `python3 Models/bayesian_agent.py` with default or supplied command-line evidence.*
+
+Below is a detailed diagram that illustrates how our Bayesian agent processes data, trains the model, and makes decisions based on the input features.
+
+```mermaid
+graph LR;
+    A[Raw Clinical Data] --> B[Data Preprocessing];
+    B --> C[Cleaning & Handling Missing Values];
+    C --> D[Binning (e.g., Age Groups) & Encoding];
+    D --> E[Preprocessed Data];
+    E --> F[Feature Extraction];
+    F --> G[Main Features:<br/>Sex, Age_group, Anatom_site_general];
+    F --> H[Additional Diagnosis Fields:<br/>Diagnosis_1, Diagnosis_2, Diagnosis_3];
+    G --> I[Bayesian Network Training];
+    I --> J[Learning CPDs using pgmpy<br/>(BayesianEstimator, BDeu Prior)];
+    J --> K[Trained Bayesian Network];
+    K --> L[Inference: benign_malignant];
+    L --> M[Output Distribution:<br/>State 0: Benign];
+    L --> N[Output Distribution:<br/>State 1: Borderline/Uncertain];
+    L --> O[Output Distribution:<br/>State 2: Malignant];
+    K --> P[Future Model Evaluation<br/>(Accuracy, ROC-AUC, etc.)];
+
+Explanation of the Improved Diagram
+	•	Data Preprocessing:
+Raw data is cleaned and missing values are handled, then binned and encoded (e.g., age is binned into groups like 0-20, 21-40, etc.).
+	•	Feature Extraction:
+The main features used for the model (Sex, Age_group, Anatom_site_general) are extracted, while additional diagnosis fields are noted (but not currently used in inference).
+	•	Bayesian Network Training:
+The main features feed into the Bayesian network training phase, where CPDs are learned using pgmpy with the BayesianEstimator and a BDeu prior.
+	•	Inference and Output:
+The trained network performs inference on benign_malignant, producing a probability distribution across three states:
+	•	State 0: Benign lesion.
+	•	State 1: Borderline/Uncertain lesion.
+	•	State 2: Malignant lesion.
+	•	Future Evaluation:
+A node indicates that further evaluation (using metrics like accuracy, ROC-AUC, etc.) is planned for future iterations.
+
+
+### Factors and Their Influence
+- **Sex, Anatom_site_general, and Age_group:** These are the input factors (sensed from clinical data) that influence the final diagnosis.
+- **benign_malignant:** This target variable is encoded into three states:
+  - ***benign_malignant(0):*** Typically represents a benign lesion.
+  - ***benign_malignant(1):*** Represents an uncertain or borderline lesion.
+  - ***benign_malignant(2):*** Represents a malignant lesion.
+
+**Additional Diagnosis Fields**
+The dataset also contains diagnosis_1, diagnosis_2, and diagnosis_3, which are additional diagnostic labels provided by expert reviewers. In this initial model, we use the primary label (benign_malignant) as our target. Future iterations may integrate these additional fields for consensus analysis or ensemble decision-making.
+
+**Age Group Binning:**
+- 0-20 years (encoded as 0).
+- 21-40 years (encoded as 1).
+- 41-60 years (encoded as 2).
+- 61-80 years (encoded as 3).
+- 81* years (encoded as 4).
+
+### About pgmpy and Calculations
+We use pgmpy, a Python library for probabilistic graphical models, to build our Bayesian network. Specifically, pgmpy is used to:
+- Define the Network Structure: Specify the nodes (variables) and their relationships (directed edges).
+- Learn CPDs: Automatically compute Conditional Probability Distributions (CPDs) from our preprocessed data using estimators (e.g., BayesianEstimator with a BDeu prior and smoothing).
+- Perform Inference: Use algorithms such as Variable Elimination to compute posterior probabilities given observed evidence.
+
+These calculations allow our agent to update its beliefs about a lesion’s diagnosis based on input evidence.
 
 ### Model Evaluation
 
@@ -41,6 +103,9 @@ The model produced the following probability distribution:
 - `benign_malignant(2)`: ~77.47%
 
 This evaluation demonstrates that the model successfully updates its beliefs based on the provided evidence. Future evaluations will include testing on a hold-out dataset and using metrics such as accuracy, ROC-AUC, precision, recall, F1-score, and calibration curves.
+
+Interpretation of the Results:
+The percentages indicate the model’s current belief in each diagnostic category based on the provided evidence. For instance, a 9.14% probability for state 0 suggests that, given the input factors, there is a 9.14% likelihood of a benign lesion.
 
 ### Evidence Handling
 The Bayesian agent now supports dynamic evidence input via command-line arguments. If no evidence is provided, the agent falls back to default values. The default sets the evidence to:
