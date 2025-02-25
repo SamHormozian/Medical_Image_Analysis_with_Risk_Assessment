@@ -31,40 +31,6 @@ The Bayesian agent's inference result is visualized below. This plot shows the p
 
 Below is a detailed diagram that illustrates how our Bayesian agent processes data, trains the model, and makes decisions based on the input features.
 
-```mermaid
-graph LR;
-    A[Raw Clinical Data] --> B[Data Preprocessing];
-    B --> C[Cleaning & Handling Missing Values];
-    C --> D[Binning (e.g., Age Groups) & Encoding];
-    D --> E[Preprocessed Data];
-    E --> F[Feature Extraction];
-    F --> G[Main Features:<br/>Sex, Age_group, Anatom_site_general];
-    F --> H[Additional Diagnosis Fields:<br/>Diagnosis_1, Diagnosis_2, Diagnosis_3];
-    G --> I[Bayesian Network Training];
-    I --> J[Learning CPDs using pgmpy<br/>(BayesianEstimator, BDeu Prior)];
-    J --> K[Trained Bayesian Network];
-    K --> L[Inference: benign_malignant];
-    L --> M[Output Distribution:<br/>State 0: Benign];
-    L --> N[Output Distribution:<br/>State 1: Borderline/Uncertain];
-    L --> O[Output Distribution:<br/>State 2: Malignant];
-    K --> P[Future Model Evaluation<br/>(Accuracy, ROC-AUC, etc.)];
-
-Explanation of the Improved Diagram
-	•	Data Preprocessing:
-Raw data is cleaned and missing values are handled, then binned and encoded (e.g., age is binned into groups like 0-20, 21-40, etc.).
-	•	Feature Extraction:
-The main features used for the model (Sex, Age_group, Anatom_site_general) are extracted, while additional diagnosis fields are noted (but not currently used in inference).
-	•	Bayesian Network Training:
-The main features feed into the Bayesian network training phase, where CPDs are learned using pgmpy with the BayesianEstimator and a BDeu prior.
-	•	Inference and Output:
-The trained network performs inference on benign_malignant, producing a probability distribution across three states:
-	•	State 0: Benign lesion.
-	•	State 1: Borderline/Uncertain lesion.
-	•	State 2: Malignant lesion.
-	•	Future Evaluation:
-A node indicates that further evaluation (using metrics like accuracy, ROC-AUC, etc.) is planned for future iterations.
-
-
 ### Factors and Their Influence
 - **Sex, Anatom_site_general, and Age_group:** These are the input factors (sensed from clinical data) that influence the final diagnosis.
 - **benign_malignant:** This target variable is encoded into three states:
