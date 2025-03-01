@@ -31,6 +31,8 @@ The Bayesian agent's inference result is visualized below. This plot shows the p
 
 Below is a detailed diagram that illustrates how our Bayesian agent processes data, trains the model, and makes decisions based on the input features.
 
+![Bayesian Network Diagram](diagram.png)
+
 ### Factors and Their Influence
 - **Sex, Anatom_site_general, and Age_group:** These are the input factors (sensed from clinical data) that influence the final diagnosis.
 - **benign_malignant:** This target variable is encoded into three states:
