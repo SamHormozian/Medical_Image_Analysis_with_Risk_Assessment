@@ -60,20 +60,46 @@ These calculations allow our agent to update its beliefs about a lesion’s diag
 
 ### Model Evaluation
 
-Our first model was evaluated using the Bayesian network trained on 18,946 observations. Inference was performed using either the default evidence or command-line provided evidence. For example, using the default evidence:
-- **sex:** 1  
-- **anatom_site_general:** 2  
-- **age_group:** 3  
+Our evaluation script (see Models/evaluate_model.py) performed a 70/30 train–test split on 18,946 observations and yielded the following performance metrics:
+	•	Test Accuracy: 61.86%
+	•	Classification Report:
+              precision    recall  f1-score   support
 
-The model produced the following probability distribution:
-- `benign_malignant(0)`: ~9.14%
-- `benign_malignant(1)`: ~13.39%
-- `benign_malignant(2)`: ~77.47%
+    benign_malignant(0)       0.59      0.70      0.64      1709
+    benign_malignant(1)       0.62      0.06      0.11      1227
+    benign_malignant(2)       0.64      0.82      0.72      2748
 
-This evaluation demonstrates that the model successfully updates its beliefs based on the provided evidence. Future evaluations will include testing on a hold-out dataset and using metrics such as accuracy, ROC-AUC, precision, recall, F1-score, and calibration curves.
+    accuracy                           0.62      5684
+    macro avg       0.61      0.53      0.49      5684
+weighted avg       0.62      0.62      0.56      5684
+•	Interpretation:
+	•	For State 0 (Benign), the model shows a precision of 59% and recall of 70%, meaning that when it predicts benign, it is correct 59% of the time and identifies 70% of true benign cases.
+	•	For State 1 (Borderline/Uncertain), the recall is very low (6%), indicating that this state is rarely predicted correctly – likely a result of class imbalance or insufficient discriminative features.
+	•	For State 2 (Malignant), the model performs best, with 64% precision and 82% recall.
+	•	Confusion Matrix:
+        [[1190   18  501]
+         [ 361   72  794]
+         [ 467   27 2254]]
+•	Explanation:
+	•	For true benign cases (Row 1), 1,190 were correctly predicted, while 501 were misclassified as malignant.
+	•	For true borderline/uncertain cases (Row 2), the model only correctly predicted 72, with many instances misclassified.
+	•	For true malignant cases (Row 3), 2,254 were correctly classified with fewer misclassifications.
 
-Interpretation of the Results:
-The percentages indicate the model’s current belief in each diagnostic category based on the provided evidence. For instance, a 9.14% probability for state 0 suggests that, given the input factors, there is a 9.14% likelihood of a benign lesion.
+### Metrics Analysis and Next Evaluation Steps
+	•	Current Interpretation:
+The preliminary results indicate that while the model is reasonably effective at identifying benign and malignant lesions, it struggles significantly with the borderline/uncertain class. This affects the overall diagnostic reliability.
+	•	Planned Evaluation Enhancements:
+To address these issues, future evaluations will include:
+	•	Data Splitting & Cross-Validation:
+To ensure the model’s generalizability.
+	•	Additional Metrics:
+Detailed analysis using ROC-AUC, calibration curves, precision, recall, and F1-scores for each class.
+	•	Handling Class Imbalance:
+Techniques like oversampling, undersampling, or class weighting to improve detection of the borderline/uncertain class.
+	•	Model Calibration:
+Verification that predicted probabilities reflect actual outcome frequencies.
+
+
 
 ### Evidence Handling
 The Bayesian agent now supports dynamic evidence input via command-line arguments. If no evidence is provided, the agent falls back to default values. The default sets the evidence to:
