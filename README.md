@@ -1,55 +1,41 @@
-# Medical_Image_Analysis_with_Risk_Assessment
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
 
-## About + Thought process
+df = pd.read_csv('avocado.csv')
 
+print(df.head())
+print(df.info())
+print(df.isnull().sum())
 
+# No NAN or null values in this dataset
+df.drop_duplicates(inplace=True)
 
+df['Date'] = pd.to_datetime(df['Date'])
+df.set_index('Date', inplace = True)
 
-## How to Run:
+df['price_change'] = df['AveragePrice'].pct_change()
+df['volume_change'] = df['Total Volume'].pct_change()
 
-1. Decompress all csv files using ```compress-decompress.py ```
+#Implement Rolling mean and standard deviation
+df['price_moving_avg'] = df['AveragePrice'].rolling(window=5).mean()
+df['volume_moving_avg'] = df['Total Volume'].rolling(window=5).mean()
 
+#Use Quantiles to define states
 
+df['price_state'] = pd.qcut(df['price_change'], q=3, labels=['Low', 'Medium', 'High'])
+df['volume_state'] = pd.qcut(df['volume_change'], q=3, labels=['Low', 'Medium', 'High'])
 
+#encode price and volume states into numerical vals
 
+# Low = 0, Med = 1, High = 2
+le_price = LabelEncoder()
+df['price_state_encoded'] = le_price.fit_transform(df['price_state'])
 
+le_volume = LabelEncoder()
+df['volume_state_encoded'] = le_volume.fit_transform(df['volume_state'])
 
-### **Goal:**
-- Make a system that detects skin cancer in patients(detects melanoma vs benign lesions, classify between multiple legions such as melanoma, nevus, keratosi, etc.), and provide uncertainty estimates for predictions
-- Trained bayesian neural network
-- C++ applicaton for real time inference with uncertainty visualizations
-- Can be used in Medical Industry
+#obs for HMM training 
+df.drop(columns=['price_state', 'volume_state'], inplace=True)
+observations = df[['price_state_encoded', 'volume_state_encoded']].values
 
-### **Steps:**
-
-**1: Gather and Understand Data**
-- Using the [**ISIC dataset**](https://api.isic-archive.com/collections/249/)
-  - BCN200 Dataset consists of dermoscopic images of skin lesions between 2010 - 2016 at Hospital Clinic in Barcelona. As well as the metadata associated with each image
-- Understand data characteristics:
-
-**2: Setup Virtual Environment**
-- optional
-
-**3. Build prototype in python**
-- data preprocessing
-- Model development
-- integrate tensorflow(possibly)
-- training and testing
-- Export Model
-
-**4. Prepare C++ deployment**
-- setup tensorflow or ONNX runtime
-- Load and Infer Model
-- Preprocess images in c++
-- Run inference
-
-**5. Visualize Results**
-
-
-## Challenges
-- issues with pushing to repo due to size of data
-- Solutions:
-  - **Lower image resolution (no smaller than 128 by 128)**
-  - **Compress metadata**
-
- # USE
+df.to_csv("processed_avocado.csv", index=False)
